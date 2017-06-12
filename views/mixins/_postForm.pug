@@ -1,0 +1,13 @@
+mixin postForm(post = {})
+  //- pre=h.dump(post)
+  form(action=`/add/${post._id || ''}` method='POST')
+    .form-group    
+      label(for='title') Title
+      input.form-control(type='text' name='title' value=post.title)
+    .form-group
+      label(for='text') Text
+      textarea.form-control(name='text' id='text')= post.text
+    button.btn.btn-primary(type='submit') Submit
+    script(src='//cdn.ckeditor.com/4.7.0/full/ckeditor.js')
+    script
+      | CKEDITOR.replace('text')

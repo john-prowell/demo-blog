@@ -1,0 +1,10 @@
+mixin postDisplay(post = {})
+  .blog-post
+    h2.blog-post-title #{post.title}
+    p.blog-post-meta(dattime=post.created)= h.moment(post.created).format('MMMM Do YYYY, h:mm a')
+      |   by   
+      a(href='#') Mark
+    != post.text
+    hr
+    a.button.btn.btn-primary(href=`/posts/${post._id}/edit`) Edit
+    hr

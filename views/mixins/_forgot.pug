@@ -1,0 +1,7 @@
+mixin forgotForm()
+  form(action='/account/forgot' method='POST')
+    h2 I forgot my password!
+    .form-group
+      label(for='email') Email Address
+      input.form-control(type='email' name='email')
+    input.btn.btn-primary(type='submit' value='Send Password Reset')

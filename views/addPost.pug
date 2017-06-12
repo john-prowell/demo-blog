@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .container
+    h2 #{title}
+    form(action='/add' method='POST')
+      .form-group
+        label(for='title') Title:
+        input.form-control(type='text' name='title' placeholder='Enter Post Title')
+      .form-group
+        label(for='post') Post:
+        textarea.form-control(name='post' placeholder='Enter Post Body')      
+      button.btn.btn-default(type='submit') Submit

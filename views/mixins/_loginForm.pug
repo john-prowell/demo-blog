@@ -1,0 +1,9 @@
+mixin loginForm()  
+  form(action='/login' method='POST')
+    .form-group
+      label(for='email') Email address:
+      input#email.form-control(type='email' name='email' placeholder='example@example.com')
+    .form-group
+      label(for='password') Password:
+      input.form-control(type='password' name='password' placeholder='Enter Password')        
+    button.btn.btn-default(type='submit') Submit

@@ -1,0 +1,56 @@
+doctype
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    //- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
+    meta(name='description', content='')
+    meta(name='author', content='')
+    link(rel='icon', href='../../favicon.ico')
+    title Blog Template for Bootstrap
+    //- Bootstrap core CSS
+    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+    //- Custom styles for this template
+    link(href='/stylesheets/blog.css', rel='stylesheet')
+  body
+    block header
+      .blog-masthead
+        .container
+          nav.blog-nav
+            if user
+              a(class='blog-nav-item active' href='/') Home
+              a(class='blog-nav-item' href='/about') About              
+              a(class='blog-nav-item' href='/logout') Logout
+              a(class='blog-nav-item' href='/add') New Post
+              img.avatar(src=user.gravatar)
+              span.avatar-name #{user.name}
+            else
+              a(class='blog-nav-item active' href='/') Home
+              a(class='blog-nav-item' href='/about') About
+              a(class='blog-nav-item' href='/register') Register
+              a(class='blog-nav-item' href='/login') Login            
+    block messages          
+      //- check if any flashes and show them if found
+      if locals.flashes
+        //- pre= h.dump(locals) displays locals on homepage
+        .container
+          .flash-messages
+            //- Object.keys(locals.flashes) gives array of flashes            
+            - const categories = Object.keys(locals.flashes)
+            //- Then loop over each category (error, warning, success etc.)
+            each category in categories
+              //- Then loop over each message in that category. like more than one warning
+              each message in flashes[category]
+                //- then for category a div will be created with class of alert-category
+                .alert(class=`alert-${category}` role="alert").alert-dismissable
+                  button.close(type='button', data-dismiss='alert', aria-label='Close')
+                    span(aria-hidden='true') ×
+                  //- != parses html if in message otherwise without ! html will be shown on page
+                  strong!= message
+      block content
+
+    block scripts
+      // Latest compiled and minified JavaScript
+      script(src='https://code.jquery.com/jquery-3.2.1.min.js', integrity='sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=', crossorigin='anonymous')
+      script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
