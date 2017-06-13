@@ -61,3 +61,49 @@ exports.reset = async (req, res) => {
      return res.redirect('/login'); 
    };
 };
+
+exports.reset = async (req, res) => {
+    //res.json(req.params);
+    const user = await User.findOne({
+        resetPasswordToken: req.params.token,
+        resetPasswordExpires: { $gt: Date.now() } // $gt: greater than date.now 
+    });
+    if (!user) {
+        req.flash('error', 'Password reset is invalid or has expired');
+        return res.redirect('/login');
+    }
+    // if there is a user, show the reset password form
+    res.render('reset', { title: 'Reset your Password' });
+};
+
+exports.confirmedPasswords = (req, res, next) => { // use [] to access property with a dash in it
+    if (req.body.password === req.body['password-confirm']) { 
+        next(); // keep it going
+        return;
+    }
+    req.flash('error', 'Passwords do not match!');
+    res.redirect('back');
+};
+
+exports.update = async (req, res) => {
+    const user = await User.findOne({
+        resetPasswordToken: req.params.token,
+        resetPasswordExpires: { $gt: Date.now() }
+    });
+    if (!user) {
+        req.flash('error', 'Password reset is invalid or has expired');
+        res.redirect('/login');
+    } // method comes from passport plugin(passportLocalMongoose, on user.js
+    // it will promisify user.setPassword method, binding it to user
+    const setPassword = promisify(user.setPassword, user);
+    // set new password then it will hash salt it
+    await setPassword(req.body.password);
+    // remove password token and expiration from db - set to undefined. then save.
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    const updatedUser = await user.save();
+    // automatically log user in. feature of passport req.login() passing it the updatedUser
+    await req.login(updatedUser);
+    req.flash('success', 'Nice! Your password has been reset. You are now logged in!');
+    res.redirect('/');
+};

@@ -61,12 +61,9 @@ router.post('/account/forgot', catchErrors(authController.forgot));
 router.get('/account/reset/:token', catchErrors(authController.reset));
 
 /* POST Update Password */
-router.post('/account/reset/:token',
-    authController.confirmedPasswords,
-    catchErrors(authController.update
-));
+router.post('/account/reset/:token', authController.confirmedPasswords, catchErrors(authController.update));
 
 /* GET Author Posts */
-router.get('/author/:id', catchErrors(postController.authorPosts));
+router.get('/author/:id/:name', catchErrors(postController.authorPosts));
 
 module.exports = router;

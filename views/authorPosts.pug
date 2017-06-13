@@ -9,8 +9,8 @@ block content
       p.lead.blog-description The official example template of creating a blog with Bootstrap.
     .row
       .col-sm-8.blog-main
-        //- pre= h.dump(posts)
-        h2 #{post.author.name}
+        //- pre=h.dump(posts)
+        h2= `${title}`    
         each post in posts
           +authorPostDisplay(post)
         nav

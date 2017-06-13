@@ -1,12 +1,13 @@
 mixin authorPostDisplay(post = {})
   //-pre=h.dump(user)
-  pre=h.dump(post)
+  //-pre=h.dump(post)
   .blog-post
     h2.blog-post-title #{post.title}
     p.blog-post-meta(dattime=post.created)= h.moment(post.created).format('MMMM Do YYYY, h:mm a')
       |   by   
-      a(href=`/author/${post.author.id}`) #{post.author.name}
+      a(href=`/author/${post.author.id}/${post.author.name}`) #{post.author.name}
     != post.text
     hr
-    a.button.btn.btn-primary(href=`/posts/${post._id}/edit`) Edit
-    hr
+    if user && post.author.equals(user._id)
+      a.button.btn.btn-primary(href=`/posts/${post._id}/edit`) Edit
+      hr
