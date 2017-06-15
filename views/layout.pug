@@ -20,7 +20,11 @@ html
           nav.blog-nav
             if user
               a(class='blog-nav-item active' href='/') Home
-              a(class='blog-nav-item' href='/about') About              
+              a(class='blog-nav-item' href='/about') About
+              a(class='blog-nav-item' href='/category/Tech') Tech
+              a(class='blog-nav-item' href='/category/Business') Business
+              a(class='blog-nav-item' href='/category/Health') Health
+              a(class='blog-nav-item' href='/category/Science') Science              
               a(class='blog-nav-item' href='/logout') Logout
               a(class='blog-nav-item' href='/add') New Post
               img.avatar(src=user.gravatar)

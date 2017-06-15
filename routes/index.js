@@ -66,4 +66,7 @@ router.post('/account/reset/:token', authController.confirmedPasswords, catchErr
 /* GET Author Posts */
 router.get('/author/:id/:name', catchErrors(postController.authorPosts));
 
+/* GET Category Posts */
+router.get('/category/:name', catchErrors(postController.categoryPosts));
+
 module.exports = router;

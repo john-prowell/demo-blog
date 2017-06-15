@@ -63,5 +63,13 @@ exports.authorPosts = async (req, res) => {
     const posts = await Post.find({ author: id })
         .populate('author')        
         .sort({ created: 'desc'});    
-    res.render('authorPosts', { title: `All Post By: ${author}`, posts })
+    res.render('authorPosts', { title: `All Posts By: ${author}`, posts })
 };
+
+exports.categoryPosts = async (req, res) => {
+    const category = req.params.name;
+    const posts = await Post.find({ category: category })
+    .populate('author')
+    .sort({ created: 'desc' });
+    res.render('posts', { title: `All Posts in ${category}`, posts});
+}
