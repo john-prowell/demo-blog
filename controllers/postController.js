@@ -19,10 +19,30 @@ exports.createPost = async (req, res) => {
 };
 
 exports.getPosts = async (req, res) => {
+    const page = req.params.page || 1;
+    const limit = 4;
+    const skip = (page * limit) - limit;
     // 1. Query the database for a list of all posts before we can dsplay them on the page
-    const posts = await Post.find().populate('author'); // Post.find() returns a promise
-    //console.log(posts);
-    res.render('posts', { title: 'Posts', posts }); // passing in the returned post data into the pug template posts.pug
+    const postsPromise = Post
+        .find() // Post.find() returns a promise
+        .populate('author') // popluates author info
+        .skip(skip) // number of posts to skip
+        .limit(limit) // max posts per page
+        .sort({ created: 'desc'}); // sorts newest first
+    
+    const countPromise = Post.count(); // counts documents
+
+    const [posts, count] = await Promise.all([postsPromise, countPromise]);
+
+    const pages = Math.ceil(count / limit);
+    //console.log(posts.length, skip);
+    if (!posts.length && skip) {
+        req.flash('warning', `Hey! You asked for page ${page}. But that doesn't exist. So I put you on page ${pages}`);
+        res.redirect(`/posts/page/${pages}`);
+        return;  
+    }
+
+    res.render('posts', { title: 'Posts', posts, page, pages, count, limit }); // passing in the returned post data into the pug template posts.pug
 };
 
 const confirmOwner = (post, user) => {
@@ -57,19 +77,55 @@ exports.updatePost = async (req, res) => {
 };
 
 exports.authorPosts = async (req, res) => {
+    const page = req.params.page || 1;
+    const limit = 4;
+    const skip = (page * limit) - limit;
     //res.json(req.params);
     const id = req.params.id; // takes in the id
     const author = req.params.name;
-    const posts = await Post.find({ author: id })
+    const postsPromise = Post
+        .find({ author: id })
         .populate('author')        
-        .sort({ created: 'desc'});    
-    res.render('authorPosts', { title: `All Posts By: ${author}`, posts })
+        .skip(skip)
+        .limit(limit)
+        .sort({ created: 'desc'}); 
+    
+    const countPromise = Post.count({ author: id });
+
+    const [posts, count] = await Promise.all([postsPromise, countPromise]);
+    
+    const pages = Math.ceil(count / limit);
+    //console.log(posts.length, skip);
+    if (!posts.length && skip) {
+        req.flash('warning', `Hey! You asked for page ${page}. But that doesn't exist. So I put you on page ${pages}.`);
+        res.redirect(`/author/${id}/${author}/page/${pages}`);
+        return;
+    }
+    res.render('authorPosts', { title: `All Posts By: ${author}`, id, author, posts, page, pages, limit, count })
 };
 
 exports.categoryPosts = async (req, res) => {
+    const page = req.params.page || 1;
+    const limit = 4;
+    const skip = (page * limit) - limit;
     const category = req.params.name;
-    const posts = await Post.find({ category: category })
-    .populate('author')
-    .sort({ created: 'desc' });
-    res.render('posts', { title: `All Posts in ${category}`, posts});
+    const postsPromise = Post
+        .find({ category: category })
+        .populate('author')
+        .skip(skip)
+        .limit(limit)
+        .sort({ created: 'desc' });
+
+    const countPromise = Post.count({category: category});
+
+    const [posts, count] = await Promise.all([postsPromise, countPromise]);
+
+    const pages = Math.ceil(count / limit);
+
+    //console.log(posts.length, skip);
+    if (!posts.length && skip) {
+        req.flash('warning', `Hey! You asked for page ${page}. But that doesn't exist. So I put you on page ${pages}.`);
+        res.redirect(`/category/${category}/page/${pages}`);
+    }
+    res.render('categoryPosts', { title: `All Posts in ${category}`, category, posts, page, pages, count, limit});
 }

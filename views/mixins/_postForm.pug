@@ -14,7 +14,7 @@ mixin postForm(post = {})
     .form-group
       label(for='text') Text
       textarea.form-control(name='text' id='text')= post.text
-    button.btn.btn-primary(type='submit') Submit
+    button.btn.btn-primary(type='submit') Publish
     script(src='//cdn.ckeditor.com/4.7.0/full/ckeditor.js')
     script
       | CKEDITOR.replace('text')

@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/_authorPostDisplay
+include mixins/_authorPagination
 
 block content
   .container
@@ -12,7 +13,8 @@ block content
         //- pre=h.dump(posts)
         h2= `${title}`    
         each post in posts
-          +authorPostDisplay(post)
+          +authorPostDisplay(post)        
+        +authorPagination(page, pages, count)
         nav
           ul.pager
             li

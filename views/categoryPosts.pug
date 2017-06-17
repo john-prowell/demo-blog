@@ -1,7 +1,7 @@
 extends layout
 
-include mixins/_postDisplay
-include mixins/_postPagination
+include mixins/_categoryPostDisplay
+include mixins/_categoryPagination
 
 block content
   .container
@@ -10,10 +10,11 @@ block content
       p.lead.blog-description The official example template of creating a blog with Bootstrap.
     .row
       .col-sm-8.blog-main
-        //-pre=h.dump(posts)
+        //- pre=h.dump(posts)
+        h2= `${title}`    
         each post in posts
-          +postDisplay(post)
-        +postPagination(page, pages, count)
+          +categoryPostDisplay(post)        
+        +categoryPagination(page, pages, count)
         nav
           ul.pager
             li

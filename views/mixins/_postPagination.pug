@@ -1,0 +1,25 @@
+mixin postPagination(page, pages, count)
+  //-pre=h.dump(count)
+  .pagination
+    .pagination__prev
+      if page > 1
+        a(href=`/posts/page/${page - 1}`) Prev
+    .pagination__text
+      p Page #{page} of #{pages} — #{count} total results
+    .pagination__next
+      if page < pages
+        a(href=`/posts/page/${parseFloat(page) + 1}`) Next
+
+//- mixin postPagination(page, pages, count)
+//-   nav(aria-label='Page navigation')  
+//-     ul.pagination
+//-       li
+//-         a(href=`/posts/page/${page - 1}`, aria-label='Previous')
+//-             span(aria-hidden='true') «
+//-     - let p = 1
+//-     while p < pages
+//-       li
+//-         a(href=`/posts/page/${p}`)=p++      
+//-       li
+//-         a(href=`/posts/page/${parseFloat(page) + 1}`, aria-label='Next')
+//-           span(aria-hidden='true') »
