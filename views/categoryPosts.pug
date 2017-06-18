@@ -11,16 +11,10 @@ block content
     .row
       .col-sm-8.blog-main
         //- pre=h.dump(posts)
-        h2= `${title}`    
+        h4= `Page ${page} of ${pages} in ${category}.`
         each post in posts
           +categoryPostDisplay(post)        
         +categoryPagination(page, pages, count)
-        nav
-          ul.pager
-            li
-              a(href='#') Previous
-            li
-              a(href='#') Next
       // /.blog-main
       .col-sm-3.col-sm-offset-1.blog-sidebar
         .sidebar-module.sidebar-module-inset

@@ -11,10 +11,8 @@ const flash = require('connect-flash');
 const expressValidator = require('express-validator');
 const routes = require('./routes/index');
 const helpers = require('./helpers');
-//const viewHelpers = require('view-helpers');
 const errorHandlers = require('./handlers/errorHandlers');
 require('./handlers/passport');
-const createPagination = require('./pagination');
 
 // create our Express app
 const app = express();
@@ -52,10 +50,6 @@ app.use(passport.session());
 
 // // The flash middleware let's us use req.flash('error', 'Shit!'), which will then pass that message to the next page the user requests
 app.use(flash());
-
-// should be declared after session and flash
-  //app.use(viewHelpers('demo-blog'));
-  //app.use(createPagination());
 
 // pass variables to our templates + all requests
 app.use((req, res, next) => {

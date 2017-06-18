@@ -127,5 +127,5 @@ exports.categoryPosts = async (req, res) => {
         req.flash('warning', `Hey! You asked for page ${page}. But that doesn't exist. So I put you on page ${pages}.`);
         res.redirect(`/category/${category}/page/${pages}`);
     }
-    res.render('categoryPosts', { title: `All Posts in ${category}`, category, posts, page, pages, count, limit});
+    res.render('categoryPosts', {category, posts, page, pages, count, limit});
 };

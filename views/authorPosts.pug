@@ -10,17 +10,11 @@ block content
       p.lead.blog-description The official example template of creating a blog with Bootstrap.
     .row
       .col-sm-8.blog-main
-        //- pre=h.dump(posts)
-        h2= `${title}`    
+        //-pre=h.dump(author)
+        h4= `Page ${page} of ${pages} posts by ${author}.`    
         each post in posts
           +authorPostDisplay(post)        
         +authorPagination(page, pages, count)
-        nav
-          ul.pager
-            li
-              a(href='#') Previous
-            li
-              a(href='#') Next
       // /.blog-main
       .col-sm-3.col-sm-offset-1.blog-sidebar
         .sidebar-module.sidebar-module-inset
