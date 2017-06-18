@@ -128,4 +128,4 @@ exports.categoryPosts = async (req, res) => {
         res.redirect(`/category/${category}/page/${pages}`);
     }
     res.render('categoryPosts', { title: `All Posts in ${category}`, category, posts, page, pages, count, limit});
-}
+};
