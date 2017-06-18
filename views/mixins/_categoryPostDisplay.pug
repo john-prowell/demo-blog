@@ -1,5 +1,6 @@
-mixin postDisplay(post = {})
-  //- pre=h.dump(post)
+mixin categoryPostDisplay(post = {})
+  //-pre=h.dump(user)
+  //-pre=h.dump(post)
   .blog-post
     h2.blog-post-title #{post.title}
     p.blog-post-meta(dattime=post.created)= h.moment(post.created).format('MMMM Do YYYY, h:mm a')

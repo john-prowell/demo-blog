@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/_postDisplay
+include mixins/_postPagination
 
 block content
   .container
@@ -12,12 +13,7 @@ block content
         //-pre=h.dump(posts)
         each post in posts
           +postDisplay(post)
-        nav
-          ul.pager
-            li
-              a(href='#') Previous
-            li
-              a(href='#') Next
+        +postPagination(page, pages, count)
       // /.blog-main
       .col-sm-3.col-sm-offset-1.blog-sidebar
         .sidebar-module.sidebar-module-inset

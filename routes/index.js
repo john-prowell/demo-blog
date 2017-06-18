@@ -12,6 +12,9 @@ router.get('/', catchErrors(postController.getPosts));
 /* GET Posts Page */
 router.get('/posts', catchErrors(postController.getPosts));
 
+/* GET Posts By Page */
+router.get('/posts/page/:page', catchErrors(postController.getPosts));
+
 /* GET Post */
 router.get('/add', authController.isLoggedIn, postController.addPost);
 
@@ -66,7 +69,13 @@ router.post('/account/reset/:token', authController.confirmedPasswords, catchErr
 /* GET Author Posts */
 router.get('/author/:id/:name', catchErrors(postController.authorPosts));
 
+/* GET Author Posts By Page */
+router.get('/author/:id/:name/page/:page', catchErrors(postController.authorPosts));
+
 /* GET Category Posts */
 router.get('/category/:name', catchErrors(postController.categoryPosts));
+
+/* GET Category Posts By Page */
+router.get('/category/:name/page/:page', catchErrors(postController.categoryPosts));
 
 module.exports = router;
