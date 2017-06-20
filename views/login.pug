@@ -1,11 +1,13 @@
 extends layout
 
+block main
+  h2 #{title}
+
 include mixins/_loginForm
 include mixins/_forgot
 
 block content
   .container
-    h2 #{title}
     +loginForm()
     hr  
     +forgotForm()

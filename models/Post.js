@@ -21,6 +21,11 @@ const postSchema = new Schema({
         ref: 'User',
         required: 'You must supply an author'    
     },
+    comments: [{
+    body: { type : String, default : '' },
+    user: { type : mongoose.Schema.ObjectId, ref : 'User' },
+    createdAt: { type : Date, default : Date.now }
+  }],
     created: {
     type: Date,
     default: Date.now

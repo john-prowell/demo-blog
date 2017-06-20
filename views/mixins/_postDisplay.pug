@@ -1,7 +1,8 @@
 mixin postDisplay(post = {})
   //- pre=h.dump(post)
-  .blog-post
-    h2.blog-post-title #{post.title}
+  .blog-post    
+    h2.blog-post-title
+      a(href=`/posts/${post.id}`)=post.title      
     p.blog-post-meta(dattime=post.created)= h.moment(post.created).format('MMMM Do YYYY, h:mm a')
       |   by   
       a(href=`/author/${post.author.id}/${post.author.name}`) #{post.author.name}
