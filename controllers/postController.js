@@ -18,6 +18,11 @@ exports.createPost = async (req, res) => {
     res.redirect('/');    
 };
 
+exports.getPost = async (req, res) => {
+    const post = await Post.findOne({ _id: req.params.id });
+    res.render('post', { post });
+};
+
 exports.getPosts = async (req, res) => {
     const page = req.params.page || 1;
     const limit = 4;

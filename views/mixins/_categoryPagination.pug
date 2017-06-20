@@ -1,23 +1,24 @@
 mixin categoryPagination(page, pages, count)
   //-pre=h.dump(page)
   nav(aria-label='Page navigation')
-    ul.pagination      
-      if page > 1  
-        li
-          a(href=`/category/${category}/page/${page - 1}`, aria-label='Previous')
-            span(aria-hidden='true') «
-      
-      - for (var p = 1; p <= pages; p++) {         
-          if page == p
-            - active= 'active'
-          else
-            - active= ''  
-          li(class=active)
-            a(href=`/category/${category}/page/${p}`)=p
-      - }
+    ul.pagination
+      if pages > 1      
+        if page > 1  
+          li
+            a(href=`/category/${category}/page/${page - 1}`, aria-label='Previous')
+              span(aria-hidden='true') «
+              
+        - for (var p = 1; p <= pages; p++) {         
+            if page == p
+              - active= 'active'
+            else
+              - active= ''  
+            li(class=active)
+              a(href=`/category/${category}/page/${p}`)=p
+        - }
 
-      if page < pages  
-        li
-          a(href=`/category/${category}/page/${parseFloat(page) + 1}`, aria-label='Next')
-            span(aria-hidden='true') »
+        if page < pages  
+          li
+            a(href=`/category/${category}/page/${parseFloat(page) + 1}`, aria-label='Next')
+              span(aria-hidden='true') »
     p Page #{page} of #{pages} — #{count} total results

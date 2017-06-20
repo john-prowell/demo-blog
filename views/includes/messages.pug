@@ -1,0 +1,17 @@
+//- check if any flashes and show them if found
+if locals.flashes
+  //- pre= h.dump(locals) displays locals on homepage
+  .container
+    .flash-messages
+      //- Object.keys(locals.flashes) gives array of flashes            
+      - const categories = Object.keys(locals.flashes)
+      //- Then loop over each category (error, warning, success etc.)
+      each category in categories
+        //- Then loop over each message in that category. like more than one warning
+        each message in flashes[category]
+          //- then for category a div will be created with class of alert-category
+          .alert(class=`alert-${category}` role="alert").alert-dismissable
+            button.close(type='button', data-dismiss='alert', aria-label='Close')
+              span(aria-hidden='true') ×
+            //- != parses html if in message otherwise without ! html will be shown on page
+            strong!= message
