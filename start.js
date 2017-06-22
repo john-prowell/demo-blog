@@ -14,8 +14,7 @@ mongoose.connection.on('error', (err) => {
 // import all models // concept called singleton on mongodb
 require('./models/Post');
 require('./models/User');
-//require('./models/Review');
-
+require('./models/Comment');
 
 // Start our app!
 const app = require('./app');

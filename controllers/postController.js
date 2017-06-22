@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 const Post = mongoose.model('Post');
+const User = mongoose.model('User');
 
 exports.homePage = (req, res) => {
     res.render('index', { title: 'My Demo Blog' });
 };
 
-exports.addPost = (req, res) => {    
+exports.addPost = (req, res) => {
     res.render('editPost', { title: 'Add Post'});
 };
 
@@ -15,11 +16,13 @@ exports.createPost = async (req, res) => {
     //await post.save(); // returns promise
     //res.json(req.body);
     req.flash('success', `Your post "<strong>${post.title}</strong>" was saved!`);
-    res.redirect('/');    
+    res.redirect('/');
 };
 
-exports.getPost = async (req, res) => {
-    const post = await Post.findOne({ _id: req.params.id });
+exports.getPost = async (req, res, next) => {
+    const post = await Post.findOne({ _id: req.params.id }).populate('author comments');
+    //res.json(post);
+    if(!post) return next();
     res.render('post', { post });
 };
 
@@ -30,11 +33,11 @@ exports.getPosts = async (req, res) => {
     // 1. Query the database for a list of all posts before we can dsplay them on the page
     const postsPromise = Post
         .find() // Post.find() returns a promise
-        .populate('author') // popluates author info
+        .populate('author') // populates author info
         .skip(skip) // number of posts to skip
         .limit(limit) // max posts per page
         .sort({ created: 'desc'}); // sorts newest first
-    
+
     const countPromise = Post.count(); // counts documents
 
     const [posts, count] = await Promise.all([postsPromise, countPromise]);
@@ -44,7 +47,7 @@ exports.getPosts = async (req, res) => {
     if (!posts.length && skip) {
         req.flash('warning', `Hey! You asked for page ${page}. But that doesn't exist. So I put you on page ${pages}`);
         res.redirect(`/posts/page/${pages}`);
-        return;  
+        return;
     }
 
     res.render('posts', { title: 'Posts', posts, page, pages, count, limit }); // passing in the returned post data into the pug template posts.pug
@@ -63,7 +66,7 @@ exports.editPost = async (req, res) => {
     // res.json(req.params);
     const post = await Post.findOne({ _id: req.params.id }) // Post.findOne returns a promise so we have to await it
     //res.json(post);
-    // 2. Confirm they are the owner of the post    
+    // 2. Confirm they are the owner of the post
     confirmOwner(post, req.user);
     // 3. Render out the edit form so the user can update their post
     res.render('editPost', { title: `Edit ${post.title}`, post }); // passing the post title and the entire post to editPost.pug template
@@ -90,15 +93,15 @@ exports.authorPosts = async (req, res) => {
     const author = req.params.name;
     const postsPromise = Post
         .find({ author: id })
-        .populate('author')        
+        .populate('author')
         .skip(skip)
         .limit(limit)
-        .sort({ created: 'desc'}); 
-    
+        .sort({ created: 'desc'});
+
     const countPromise = Post.count({ author: id });
 
     const [posts, count] = await Promise.all([postsPromise, countPromise]);
-    
+
     const pages = Math.ceil(count / limit);
     //console.log(posts.length, skip);
     if (!posts.length && skip) {

@@ -1,9 +1,13 @@
 extends layout
 
+include mixins/_commentForm
+include mixins/_comment
+
 block main
   h2=title
 
 block content
+  //-pre=h.dump(post)
   .container
     .row
       .col-sm-8.blog-main
@@ -17,5 +21,13 @@ block content
           if user && post.author.equals(user._id)
           a.button.btn.btn-primary(href=`/posts/${post._id}/edit`) Edit
           hr
+          if user
+            +commentForm(post)
+  
+          if post.comments
+            .comments
+              each comment in post.comments
+                .comment
+                  +comment(comment)    
       include sidebar
   

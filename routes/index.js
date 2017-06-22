@@ -3,14 +3,15 @@ const router = express.Router();
 const postController = require('../controllers/postController');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
+const commentController = require('../controllers/commentController');
 const { catchErrors } = require('../handlers/errorHandlers');
 // only imports the catchErrors function from file
 
 /* User Routes */
 router.get('/register', userController.registerForm);
 router.post('/register',
-  userController.validateRegister, 
-  userController.checkIfUserExist,  
+  userController.validateRegister,
+  userController.checkIfUserExist,
   userController.register,
   authController.login
 );
@@ -40,5 +41,8 @@ router.get('/author/:id/:name/page/:page', catchErrors(postController.authorPost
 // by category
 router.get('/category/:name', catchErrors(postController.categoryPosts));
 router.get('/category/:name/page/:page', catchErrors(postController.categoryPosts));
+
+/* Comment Routes */
+router.post('/comments/:id', authController.isLoggedIn, catchErrors(commentController.addComment));
 
 module.exports = router;
